@@ -54,7 +54,7 @@ function initAmberCascades(canvas: HTMLCanvasElement) {
 
   let columns: Column[] = [];
   let waterSurface = 0;
-  let ripples: Ripple[] = [];
+  const ripples: Ripple[] = [];
   let wavePoints: WavePoint[] = [];
 
   function createColumn(index: number, scatter: boolean): Column {
@@ -293,8 +293,11 @@ function initAmberCascades(canvas: HTMLCanvasElement) {
 
   function handleInteract(e: MouseEvent | TouchEvent) {
     const touch = 'touches' in e ? e.touches[0] : null;
-    const x = touch ? touch.clientX : (e as MouseEvent).clientX;
-    const y = touch ? touch.clientY : (e as MouseEvent).clientY;
+    const clientX = touch ? touch.clientX : (e as MouseEvent).clientX;
+    const clientY = touch ? touch.clientY : (e as MouseEvent).clientY;
+    const rect = canvas.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
 
     disturbWave(x, -4 - Math.random() * 3);
     spawnRipple(x, waterSurface);
